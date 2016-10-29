@@ -1,0 +1,6 @@
+rootProject.name = 'JavaFundamentalsProject'
+
+include 'core',
+        'jdbc',
+        'servlets'
+

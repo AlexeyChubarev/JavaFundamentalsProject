@@ -1,0 +1,19 @@
+subprojects {
+    group 'java.fundamentals.project'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+
+    //noinspection GroovyUnusedAssignment
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile 'ch.qos.logback:logback-classic:+'
+        compileOnly 'org.projectlombok:lombok:+'
+        testCompile 'junit:junit:+'
+    }
+}
