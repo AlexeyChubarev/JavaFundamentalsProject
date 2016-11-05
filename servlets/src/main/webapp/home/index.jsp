@@ -11,27 +11,43 @@
 <table cellpadding="0" style="border: 0; padding: 0;width: 100%; height: 100%; background-color: #45668e">
     <tr>
         <td style="width: 20%; padding: 10px" valign="top" >
-            Мои друзья<br/>
-            Мои сообщения<br/>
-            Мои фотографии<br/>
+            <table>
+                <tr>
+                    <td>
+                        Мои друзья
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Мои сообщения
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Мои фотографии
+                    </td>
+                </tr>
+            </table>
         </td>
         <td style="width: 60%">
-            <table cellpadding="10" style="border: 0; padding: 0px; width: 100%; height: 100%; background-color: azure">
+            <table cellpadding="10" style="border: 0; padding: 0; width: 100%; height: 100%; background-color: azure">
                 <tr style="width: 100%; height: 30px; background-color: azure;">
                     <td colspan="2" align="right">
-                        <a style="font-size: small" href="/login/login.jsp">Logout</a>
+                        <form method="post" action="/logout">
+                            <input type="submit" value="Logout" />
+                        </form>
                     </td>
                 </tr>
                 <tr style="padding: 10px">
                     <td style="width: 200px; height: 200px; background-color: ghostwhite;" align="middle">
-                        USER_IMAGE
+                        <img src="/image" width="200px" height="200px"/>
                     </td>
                     <td valign="top">
                         <h5>
                             <%=user.getFirstName()%> <%=user.getLastName()%>
                         </h5>
                         <h6>
-                            Dob: <%=user.getDob()%>
+                            Dob: <%=user.getCountry()%>
                         </h6>
                     </td>
                 </tr>

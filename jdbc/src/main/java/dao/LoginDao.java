@@ -8,8 +8,5 @@ public interface LoginDao
 {
     Optional<Login> getUserId(String login, String password);
 
-    default boolean isUserRegistered(String login, String hash)
-    {
-        return getUserId(login, hash).isPresent();
-    }
+    boolean isLoginUnique(String login);
 }

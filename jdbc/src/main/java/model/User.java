@@ -20,8 +20,5 @@ public class User
     private final long id;
     private final String firstName;
     private final String lastName;
-    private final Date dob;
-    private final Blob photo;
-    private final String login;
-    private final String password;
+    private final String country;
 }

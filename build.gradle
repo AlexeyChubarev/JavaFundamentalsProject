@@ -12,8 +12,8 @@ subprojects {
     }
 
     dependencies {
-        compile 'ch.qos.logback:logback-classic:+'
-        compileOnly 'org.projectlombok:lombok:+'
-        testCompile 'junit:junit:+'
+        compile 'org.slf4j:slf4j-simple:1.7.21'
+        compileOnly 'org.projectlombok:lombok:1.16.10'
+        testCompile 'junit:junit:4.12'
     }
 }

@@ -4658,6 +4658,7 @@
         <mime-type>application/vnd.handheld-entertainment+xml</mime-type>
     </mime-mapping>
 
+
   <!-- ==================== Default Welcome File List ===================== -->
   <!-- When a request URI refers to a directory, the default servlet looks  -->
   <!-- for a "welcome file" within that directory and, if present, to the   -->
@@ -4677,5 +4678,4 @@
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-
 </web-app>

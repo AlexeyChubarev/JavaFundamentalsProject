@@ -5,6 +5,6 @@ dependencies {
     compile project(":jdbc")
 
     // Tomcat internal libraries
-    providedCompile 'org.apache.tomcat:tomcat-api:+'
-    providedCompile 'org.apache.tomcat:tomcat-jsp-api:+'
+    providedCompile 'org.apache.tomcat:tomcat-api:9.0.0.M11'
+    providedCompile 'org.apache.tomcat:tomcat-jsp-api:9.0.0.M11'
 }

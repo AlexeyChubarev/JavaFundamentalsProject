@@ -8,8 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@SuppressWarnings("WeakerAccess")
-public  interface PooledConnection extends Connection, Supplier<Connection>
+interface PooledConnection extends Connection, Supplier<Connection>
 {
     @SneakyThrows
     static PooledConnection create(Connection connection, Consumer<PooledConnection> free)
@@ -351,14 +350,14 @@ public  interface PooledConnection extends Connection, Supplier<Connection>
     }
 
     @Override
-    default <T> T unwrap(Class<T> iface) throws SQLException
+    default <T> T unwrap(Class<T> iFace) throws SQLException
     {
-        return get().unwrap(iface);
+        return get().unwrap(iFace);
     }
 
     @Override
-    default boolean isWrapperFor(Class<?> iface) throws SQLException
+    default boolean isWrapperFor(Class<?> iFace) throws SQLException
     {
-        return get().isWrapperFor(iface);
+        return get().isWrapperFor(iFace);
     }
 }
