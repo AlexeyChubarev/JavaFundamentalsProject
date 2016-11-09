@@ -3,9 +3,6 @@ package model;
 import lombok.Value;
 import lombok.AllArgsConstructor;
 
-import java.sql.Blob;
-import java.sql.Date;
-
 /*
  *
  * SQL and PL/SQL Data Type NUMBER hss JDBC Mapping java.math.BigDecimal

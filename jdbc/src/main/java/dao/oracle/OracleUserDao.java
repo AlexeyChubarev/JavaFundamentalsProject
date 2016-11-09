@@ -1,7 +1,6 @@
 package dao.oracle;
 
 import dao.UserDao;
-import model.Photo;
 import model.User;
 
 import lombok.AllArgsConstructor;
@@ -41,27 +40,6 @@ public class OracleUserDao implements UserDao
     }
 
     @Override
-    public Optional<Photo> getPhotoById(long id)
-    {
-        Optional<Photo> photo = Optional.empty();
-
-        try (Connection connection = connectionSupplier.get();
-             PreparedStatement ps = getUserPhoto(connection, id);
-             ResultSet resultSet = ps.executeQuery())
-        {
-            while (resultSet.next())
-            {
-                photo = Optional.of(new Photo(resultSet.getBlob("PHOTO")));
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return photo;
-    }
-
-    @Override
     public void createUser(String firstName, String lastName, String country, String login, String password)
     {
         try (Connection connection = connectionSupplier.get();
@@ -90,14 +68,6 @@ public class OracleUserDao implements UserDao
     private PreparedStatement getUserInfo(Connection connection, long id) throws SQLException
     {
         String sql = "SELECT ID,FIRST_NAME,LAST_NAME,COUNTRY FROM USERS WHERE ID=?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setLong(1, id);
-        return preparedStatement;
-    }
-
-    private PreparedStatement getUserPhoto(Connection connection, long id) throws SQLException
-    {
-        String sql = "SELECT PHOTO FROM USERS WHERE ID=?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setLong(1, id);
         return preparedStatement;

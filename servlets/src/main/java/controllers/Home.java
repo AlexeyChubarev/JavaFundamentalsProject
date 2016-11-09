@@ -1,8 +1,8 @@
 package controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import model.User;
 import dao.UserDao;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
-@WebServlet("/home")
+@WebServlet("/home/*")
 public class Home extends HttpServlet
 {
     private UserDao userDao;
@@ -39,23 +39,54 @@ public class Home extends HttpServlet
 
         HttpSession session = request.getSession(true);
 
-        Optional<User> user = userDao.getById((long)session.getAttribute(USER));
+        // TODO: 05.11.2016 Разобраться с блоком ниже
+        if(session.getAttribute(USER)==null)
+        {
+            log.error("HOME::DO_GET::HOW_IT_POSSIBLE");
+            response.sendRedirect("/login/authorizationError.html");
+            return;
+        }
+
+        Optional<User> user;
+
+        if(request.getPathInfo()!=null)
+        {
+            String targetUser = request.getPathInfo().substring(1);
+            log.info("HOME::DO_GET::TARGET_USER_ID::" + targetUser);
+            try
+            {
+                long targetUserId = Long.parseLong(targetUser);
+                user = userDao.getById(targetUserId);
+            }
+            catch (NumberFormatException e)
+            {
+                // TODO: 08.11.2016 Вынести в отдельный метод
+                response.sendRedirect("/main/pageNotFoundError.html");
+                log.info("HOME::DO_GET::REDIRECT::/main/pageNotFoundError.html");
+                return;
+            }
+        }
+        else
+        {
+            response.sendRedirect("/home/"+String.valueOf((long)session.getAttribute(USER)));
+            return;
+        }
+
 
         if (user.isPresent())
         {
             log.info("HOME::DO_GET::USER_FOUND");
             request.setAttribute("user", user.get());
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/main/index.jsp");
+            requestDispatcher.forward(request, response);
+            log.info("HOME::DO_GET::FORWARD::/main/index.jsp");
         }
         else
         {
-            /* В теории этот блок никогда не отработает */
-            log.warn("HOME::DO_GET::USER_NOT_FOUND");
-            request.getRequestDispatcher("/login/authorizationError.html").forward(request, response);
-            log.warn("HOME::DO_GET::FORWARD::/login/authorizationError.html");
+            log.info("HOME::DO_GET::USER_NOT_FOUND");
+            response.sendRedirect("/main/pageNotFoundError.html");
+            log.info("HOME::DO_GET::REDIRECT::/main/pageNotFoundError.html");
         }
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/home/index.jsp");
-        requestDispatcher.forward(request, response);
-        log.info("HOME::DO_GET::FORWARD::/home/index.jsp");
         log.info("HOME::DO_GET::END");
     }
 }

@@ -1,8 +1,12 @@
 package listeners;
 
 import common.ConnectionPool;
+import dao.CommonDao;
+import dao.FriendDao;
 import dao.LoginDao;
 import dao.UserDao;
+import dao.oracle.OracleCommonDao;
+import dao.oracle.OracleFriendDao;
 import dao.oracle.OracleLoginDao;
 import dao.oracle.OracleUserDao;
 
@@ -25,8 +29,12 @@ public class Initer implements ServletContextListener
 
         UserDao userDao = new OracleUserDao(connectionPool);
         LoginDao loginDao = new OracleLoginDao(connectionPool);
+        FriendDao friendDao = new OracleFriendDao(connectionPool);
+        CommonDao commonDao = new OracleCommonDao(connectionPool);
 
         context.setAttribute("userDao", userDao);
         context.setAttribute("loginDao", loginDao);
+        context.setAttribute("friendDao", friendDao);
+        context.setAttribute("commonDao", commonDao);
     }
 }

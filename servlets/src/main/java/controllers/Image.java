@@ -1,10 +1,9 @@
 package controllers;
 
-import dao.UserDao;
+import dao.CommonDao;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import model.Photo;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -14,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Optional;
@@ -22,14 +23,14 @@ import java.util.Optional;
 @WebServlet("/image")
 public class Image extends HttpServlet
 {
-    private UserDao userDao;
+    private CommonDao commonDao;
     private static final String USER = "USER_ID";
 
     @Override
     public void init(ServletConfig config) throws ServletException
     {
         ServletContext servletContext = config.getServletContext();
-        userDao = (UserDao)servletContext.getAttribute("userDao");
+        commonDao = (CommonDao)servletContext.getAttribute("commonDao");
         log.info("IMAGE::INITIALIZATION::COMPLETE");
     }
 
@@ -39,15 +40,28 @@ public class Image extends HttpServlet
     {
         log.info("IMAGE::DO_GET::BEGIN");
 
-        HttpSession session = request.getSession(true);
+        long target_id;
 
-        long user_id = (long)session.getAttribute(USER);
-        Optional<Photo> photo = userDao.getPhotoById(user_id);
+        try
+        {
+            log.info("IMAGE::DO_GET::TARGET_USER_ID::" + request.getParameter("id"));
+            target_id = Long.parseLong(request.getParameter("id"));
+        }
+        catch (NumberFormatException e)
+        {
+            log.info("IMAGE::DO_GET::PARSE_FAILED");
+            HttpSession session = request.getSession(true);
+            response.sendRedirect("/home/"+(long)session.getAttribute(USER));
+            log.info("IMAGE::DO_GET::REDIRECT::USER_PAGE");
+            return;
+        }
 
-        if (photo.isPresent())
+        Optional<model.Image> image = commonDao.getImageById(target_id);
+
+        if (image.isPresent())
         {
             log.info("IMAGE::DO_GET::PHOTO_EXISTS");
-            byte[] imgData = photo.get().getImage().getBytes(1,(int)photo.get().getImage().length());
+            byte[] imgData = image.get().getImage().getBytes(1,(int)image.get().getImage().length());
             OutputStream o = response.getOutputStream();
             response.setContentType("image/gif");
             o.write(imgData);
@@ -56,10 +70,32 @@ public class Image extends HttpServlet
         }
         else
         {
-            // TODO: 05.11.2016 Заменить дефолтовой аватаркой
-            log.warn("IMAGE::DO_GET::PHOTO_DOES_NOT_EXIST");
+            log.info("IMAGE::DO_GET::PHOTO_DOES_NOT_EXIST");
+            String path = request.getServletContext().getRealPath("images/defaultUserImage.jpg");
+            log.info("IMAGE::DO_GET::PATH::" + path);
+            File file = new File(path);
+
+            response.setContentLength((int)file.length());
+
+            FileInputStream in = new FileInputStream(file);
+            OutputStream out = response.getOutputStream();
+
+            copyImage(in,out);
+
+            out.flush();
+            out.close();
+            in.close();
         }
 
         log.info("IMAGE::DO_GET::END");
+    }
+
+    private void copyImage(FileInputStream in, OutputStream out) throws IOException
+    {
+        // Copy the contents of the file to the output stream
+        byte[] buf = new byte[1024];
+        int count;
+        while ((count = in.read(buf)) >= 0)
+            out.write(buf, 0, count);
     }
 }

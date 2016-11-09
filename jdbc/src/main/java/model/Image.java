@@ -8,7 +8,7 @@ import java.sql.Blob;
 
 @Value
 @AllArgsConstructor
-public class Photo
+public class Image
 {
     private Blob image;
 }

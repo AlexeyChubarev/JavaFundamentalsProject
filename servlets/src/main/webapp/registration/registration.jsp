@@ -25,7 +25,7 @@
                             First name
                         </td>
                         <td>
-                            <input type="text" name="userFirstName"/> <br/>
+                            <input maxlength="64" type="text" name="userFirstName"/> <br/>
                         </td>
                     </tr>
                     <tr>
@@ -33,7 +33,7 @@
                             Last name:
                         </td>
                         <td>
-                            <input type="text" name="userLastName"/> <br/>
+                            <input maxlength="64" type="text" name="userLastName"/> <br/>
                         </td>
                     </tr>
                     <tr>
@@ -41,7 +41,7 @@
                             Email:
                         </td>
                         <td>
-                            <input type="text" name="userLogin"/> <br/>
+                            <input maxlength="256" type="text" name="userLogin"/> <br/>
                         </td>
                     </tr>
                     <tr>
@@ -49,7 +49,7 @@
                             Password:
                         </td>
                         <td>
-                            <input type="password" name="userPassword"/> <br/>
+                            <input maxlength="64" type="password" name="userPassword"/> <br/>
                         </td>
                     </tr>
                     <tr>
@@ -57,7 +57,7 @@
                             Repeat password:
                         </td>
                         <td>
-                            <input type="password" name="userPasswordRepeat"/> <br/>
+                            <input maxlength="64" type="password" name="userPasswordRepeat"/> <br/>
                         </td>
                     </tr>
                     <tr>

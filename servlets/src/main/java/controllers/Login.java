@@ -47,8 +47,8 @@ public class Login extends HttpServlet
         if (session.getAttribute(USER) != null)
         {
             log.info("LOGIN::DO_POST::USER_ALREADY_LOGGED_IN");
-            response.sendRedirect("/home");
-            log.info("LOGIN::DO_POST::REDIRECT::/home");
+            response.sendRedirect("/home/" + String.valueOf((long)session.getAttribute(USER)));
+            log.info("LOGIN::DO_POST::REDIRECT::/home/USER_ID");
             return;
         }
 
@@ -68,8 +68,9 @@ public class Login extends HttpServlet
         {
             log.info("LOGIN::DO_POST::USER_FOUND");
             session.setAttribute(USER, login.get().getUserId());
-            response.sendRedirect("/home");
-            log.info("LOGIN::DO_POST::REDIRECT::/home");
+            /*----------------------------------------------------------------------*/
+            response.sendRedirect("/home/"+login.get().getUserId());
+            log.info("LOGIN::DO_POST::REDIRECT::/home/"+login.get().getUserId());
         }
         else
         {

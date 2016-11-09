@@ -7,12 +7,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
 @WebServlet("/logout")
 public class Logout extends HttpServlet
 {
+    private static final String USER = "USER_ID";
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -32,8 +35,10 @@ public class Logout extends HttpServlet
     {
         log.info("LOGOUT::DO_GET::BEGIN");
 
-        response.sendRedirect("/home");
-        log.info("LOGOUT::DO_GET::REDIRECT::/home");
+        HttpSession session = request.getSession(true);
+        String userId = String.valueOf((long)session.getAttribute(USER));
+        response.sendRedirect("/home/" + userId);
+        log.info("LOGOUT::DO_GET::REDIRECT::/HOME/USER_ID");
 
         log.info("LOGOUT::DO_GET::END");
     }
