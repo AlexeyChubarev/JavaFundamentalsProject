@@ -1,4 +1,4 @@
-package controllers;
+package controllers.friends;
 
 import dao.FriendDao;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +37,7 @@ public class Friends extends HttpServlet
         log.info("FRIENDS::DO_GET::BEGIN");
         HttpSession session = request.getSession(true);
 
-        Collection<Friend> friends = friendDao.getFriends((long)session.getAttribute(USER));
-        request.setAttribute("friends", friends);
+        getAllCollections((long)session.getAttribute(USER), request);
 
         //load friends collection
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/friends/index.jsp");
@@ -46,5 +45,20 @@ public class Friends extends HttpServlet
         log.info("FRIENDS::DO_GET::FORWARD::/friends/index.jsp");
 
         log.info("FRIENDS::DO_GET::END");
+    }
+
+    private void getAllCollections(long id, HttpServletRequest request)
+    {
+        Collection<Friend> friends = friendDao.getFriends(id);
+        log.info("FRIENDS::DO_GET::FRIENDS_SIZE::" + friends.size());
+        request.setAttribute("friends", friends);
+
+        Collection<Friend> incRequests = friendDao.getIncomingRequests(id);
+        log.info("FRIENDS::DO_GET::FRIENDS_SIZE::" + incRequests.size());
+        request.setAttribute("incRequests", incRequests);
+
+        Collection<Friend> outRequests = friendDao.getOutgoingRequests(id);
+        log.info("FRIENDS::DO_GET::FRIENDS_SIZE::" + outRequests.size());
+        request.setAttribute("outRequests", outRequests);
     }
 }

@@ -1,4 +1,4 @@
-package controllers;
+package controllers.images;
 
 import dao.CommonDao;
 
@@ -56,7 +56,7 @@ public class Image extends HttpServlet
             return;
         }
 
-        Optional<model.Image> image = commonDao.getImageById(target_id);
+        Optional<model.Image> image = commonDao.getUserImage(target_id);
 
         if (image.isPresent())
         {
@@ -76,7 +76,6 @@ public class Image extends HttpServlet
             File file = new File(path);
 
             response.setContentLength((int)file.length());
-
             FileInputStream in = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
 

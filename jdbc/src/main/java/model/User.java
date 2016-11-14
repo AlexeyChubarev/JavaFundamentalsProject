@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 
 /*
  *
- * SQL and PL/SQL Data Type NUMBER hss JDBC Mapping java.math.BigDecimal
- * SQL and PL/SQL Data Type BLOB has JDBC Mapping java.sql.Blob
+ * SQL and PL/SQL Data Type NUMBER hss JDBC Mapping: java.math.BigDecimal
+ * SQL and PL/SQL Data Type BLOB has JDBC Mapping: java.sql.Blob
  *
  */
 
@@ -18,4 +18,6 @@ public class User
     private final String firstName;
     private final String lastName;
     private final String country;
+    private final String status;
+    private final int friendsCount;
 }

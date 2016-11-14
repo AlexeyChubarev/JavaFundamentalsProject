@@ -38,6 +38,7 @@ public class Home extends HttpServlet
         log.info("HOME::DO_GET::BEGIN");
 
         HttpSession session = request.getSession(true);
+        final long userId = (long)session.getAttribute(USER);
 
         // TODO: 05.11.2016 Разобраться с блоком ниже
         if(session.getAttribute(USER)==null)
@@ -56,7 +57,7 @@ public class Home extends HttpServlet
             try
             {
                 long targetUserId = Long.parseLong(targetUser);
-                user = userDao.getById(targetUserId);
+                user = userDao.getById(targetUserId, userId);
             }
             catch (NumberFormatException e)
             {
@@ -68,7 +69,7 @@ public class Home extends HttpServlet
         }
         else
         {
-            response.sendRedirect("/home/"+String.valueOf((long)session.getAttribute(USER)));
+            response.sendRedirect("/home/"+String.valueOf(userId));
             return;
         }
 

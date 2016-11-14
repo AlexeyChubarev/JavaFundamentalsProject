@@ -15,12 +15,12 @@ public class OracleUserDao implements UserDao
     private Supplier<Connection> connectionSupplier;
 
     @Override
-    public Optional<User> getById(long id)
+    public Optional<User> getById(long targetId, long userId)
     {
         Optional<User> user = Optional.empty();
 
         try (Connection connection = connectionSupplier.get();
-             PreparedStatement ps = getUserInfo(connection, id);
+             PreparedStatement ps = getUserInfo(connection, targetId, userId);
              ResultSet resultSet = ps.executeQuery())
         {
             while (resultSet.next())
@@ -29,7 +29,9 @@ public class OracleUserDao implements UserDao
                         resultSet.getLong("ID"),
                         resultSet.getString("FIRST_NAME"),
                         resultSet.getString("LAST_NAME"),
-                        resultSet.getString("COUNTRY")));
+                        resultSet.getString("COUNTRY"),
+                        resultSet.getString("STATUS"),
+                        resultSet.getInt("COUNT")));
             }
         }
         catch (SQLException e)
@@ -65,11 +67,14 @@ public class OracleUserDao implements UserDao
         return callableStatement;
     }
 
-    private PreparedStatement getUserInfo(Connection connection, long id) throws SQLException
+    private PreparedStatement getUserInfo(Connection connection, long targetId, long userId) throws SQLException
     {
-        String sql = "SELECT ID,FIRST_NAME,LAST_NAME,COUNTRY FROM USERS WHERE ID=?";
+        String sql = "SELECT ID,FIRST_NAME,LAST_NAME,COUNTRY,GET_STATUS(?,?) AS STATUS, GET_FRIENDS_COUNT(?) AS COUNT FROM USERS WHERE ID=?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setLong(1, id);
+        preparedStatement.setLong(1, userId);
+        preparedStatement.setLong(2, targetId);
+        preparedStatement.setLong(3, targetId);
+        preparedStatement.setLong(4, targetId);
         return preparedStatement;
     }
 }

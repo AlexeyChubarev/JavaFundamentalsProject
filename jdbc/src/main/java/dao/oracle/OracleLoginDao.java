@@ -14,12 +14,12 @@ public class OracleLoginDao implements LoginDao
     private Supplier<Connection> connectionSupplier;
 
     @Override
-    public Optional<Login> getUserId(String login, String password)
+    public Optional<Login> getUserId(String login, String hash)
     {
         Optional<Login> userId = Optional.empty();
 
         try (Connection connection = connectionSupplier.get();
-             PreparedStatement ps = getUserId(connection, login, password);
+             PreparedStatement ps = getUserId(connection, login, hash);
              ResultSet resultSet = ps.executeQuery())
         {
             while (resultSet.next())
@@ -56,12 +56,12 @@ public class OracleLoginDao implements LoginDao
         return false;
     }
 
-    private PreparedStatement getUserId(Connection con, String login, String password) throws SQLException
+    private PreparedStatement getUserId(Connection con, String login, String hash) throws SQLException
     {
         String sql = "SELECT USER_ID FROM LOGIN WHERE USER_LOGIN=? AND USER_PASSWORD=?";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setString(1, login);
-        ps.setString(2, password);
+        ps.setString(2, hash);
         return ps;
     }
 

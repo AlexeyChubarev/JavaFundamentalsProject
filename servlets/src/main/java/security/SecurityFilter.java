@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter({"/home/*", "/friends/*", "/image"})
+@WebFilter({"/home/*", "/friends/*", "/imagesz", "/settings"})
 public class SecurityFilter implements HttpFilter
 {
     private static final String USER = "USER_ID";

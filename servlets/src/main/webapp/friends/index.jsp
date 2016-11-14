@@ -8,6 +8,8 @@
 %>
 
 <jsp:useBean id="friends" class="java.util.HashSet" scope="request"/>
+<jsp:useBean id="incRequests" class="java.util.HashSet" scope="request"/>
+<jsp:useBean id="outRequests" class="java.util.HashSet" scope="request"/>
 
 <html>
 <head>
@@ -20,17 +22,27 @@
             <table>
                 <tr>
                     <td>
-                        <a style="font-size: medium; text-decoration: none" href=<%=userHome%>> My page</a>
+                        <a style="font-size: medium; text-decoration: none" href=<%=userHome%>>My page</a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a style="font-size: medium; text-decoration: none" href="/home">My messages</a>
+                        <a style="font-size: medium; text-decoration: none" href="/settings">My settings</a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a style="font-size: medium; text-decoration: none" href="/home">My photos</a>
+                        <a style="font-size: medium; text-decoration: none" href="/friends">My friends</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a style="font-size: medium; text-decoration: none" href=<%=userHome%>>My messages</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a style="font-size: medium; text-decoration: none" href=<%=userHome%>>My photos</a>
                     </td>
                 </tr>
             </table>
@@ -45,19 +57,126 @@
                     </td>
                 </tr>
 
-                <% for (Friend friend: (HashSet<Friend>) friends) {%>
+                <tr style="background-color: #45668e">
+                    <td colspan="2" align="center">
+                        <p style="color: azure">
+                            Friends
+                        </p>
+                    </td>
+                </tr>
+
+                <% if (friends.size()==0) {%>
                 <tr>
-                    <td style="width: 210px; height: 210px" align="center">
-                        <a href="/image?id=<%=friend.getFriendId()%>">
-                            <img src="/image?id=<%=friend.getFriendId()%>" width="200px" height="200px"/>
+                    <td colspan="2">
+                        <p style="color: #45668e">
+                            No friends yet
+                        </p>
+                    </td>
+                </tr>
+                <%}%>
+                <% for (Friend item: (HashSet<Friend>) friends) {%>
+                <tr>
+                    <td style="width: 110px; height: 110px" align="center">
+                        <a href="/home/<%=item.getFriendId()%>">
+                            <img src="/image?id=<%=item.getFriendId()%>" width="100px" height="100px"/>
                         </a>
                     </td>
-                    <td style="padding-left:10px" valign="top">
+                    <td style="padding-left:10px;" valign="top">
                         <h5>
                             <a style="font-size: medium; text-decoration: none; color: #45668e"
-                               href="/home/<%=friend.getFriendId()%>">
-                                <%=friend.getFirstName()%> <%=friend.getLastName()%>
-                            </a>
+                               href="/home/<%=item.getFriendId()%>">
+                                <%=item.getFirstName()%> <%=item.getLastName()%>
+                            </a><br/><br/>
+                            <form method="post" action="/friendsManager?action=REMOVE_FRIEND&id=<%=item.getFriendId()%>">
+                                <input type="submit" value="Remove"/>
+                            </form><br/>
+                        </h5>
+                    </td>
+                </tr>
+                <%}%>
+
+                <tr style="background-color: #45668e">
+                    <td colspan="2" align="center">
+                        <p style="color: azure">
+                            Incoming requests
+                        </p>
+                    </td>
+                </tr>
+
+                <% if (incRequests.size()==0) {%>
+                <tr>
+                    <td colspan="2">
+                        <p style="color: #45668e">
+                            No incoming requests
+                        </p>
+                    </td>
+                </tr>
+                <%}%>
+                <% for (Friend item: (HashSet<Friend>) incRequests) {%>
+                <tr>
+                    <td style="width: 110px; height: 110px" align="center">
+                        <a href="/home/<%=item.getFriendId()%>">
+                            <img src="/image?id=<%=item.getFriendId()%>" width="100px" height="100px"/>
+                        </a>
+                    </td>
+                    <td style="padding-left:10px;" valign="top">
+                        <h5>
+                            <a style="font-size: medium; text-decoration: none; color: #45668e"
+                               href="/home/<%=item.getFriendId()%>">
+                                <%=item.getFirstName()%> <%=item.getLastName()%>
+                            </a><br/>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <form method="post" action="/friendsManager?action=ADD_FRIEND&id=<%=item.getFriendId()%>">
+                                            <input type="submit" value="Accept"/>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="/friendsManager?action=REJECT_REQUEST&id=<%=item.getFriendId()%>">
+                                            <input type="submit" value="Reject"/>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h5>
+                    </td>
+                </tr>
+                <%}%>
+
+                <tr style="background-color: #45668e">
+                    <td colspan="2" align="center">
+                        <p style="color: azure">
+                            Outgoing requests
+                        </p>
+                    </td>
+                </tr>
+
+                <% if (outRequests.size()==0) {%>
+                <tr>
+                    <td colspan="2">
+                        <p style="color: #45668e">
+                            No outgoing requests
+                        </p>
+                    </td>
+                </tr>
+                <%}%>
+                <% for (Friend item: (HashSet<Friend>) outRequests) {%>
+                <tr>
+                    <td style="width: 110px; height: 110px" align="center">
+                        <a href="/home/<%=item.getFriendId()%>">
+                            <img src="/image?id=<%=item.getFriendId()%>" width="100px" height="100px"/>
+                        </a>
+                    </td>
+                    <td style="padding-left:10px;" valign="top">
+                        <h5>
+                            <a style="font-size: medium; text-decoration: none; color: #45668e"
+                               href="/home/<%=item.getFriendId()%>">
+                                <%=item.getFirstName()%> <%=item.getLastName()%>
+                            </a><br/><br/>
+                            <form method="post" action="/friendsManager?action=REVOKE_REQUEST&id=<%=item.getFriendId()%>">
+                                <input type="submit" value="Cancel"/>
+                            </form><br/>
                         </h5>
                     </td>
                 </tr>

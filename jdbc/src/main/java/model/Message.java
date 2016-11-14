@@ -1,7 +1,7 @@
 package model;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
+import lombok.AllArgsConstructor;
 
 @Value
 @AllArgsConstructor

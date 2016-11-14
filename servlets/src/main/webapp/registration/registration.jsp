@@ -19,6 +19,15 @@
         <td style="width: 20%"></td>
         <td style="width: 60%; background-color: azure" align="center" valign="top ">
             <table style="background-color: azure">
+
+                <tr style="background-color: #45668e">
+                    <td colspan="2" align="center">
+                        <p style="color: azure">
+                            Registration
+                        </p>
+                    </td>
+                </tr>
+
                 <form method="POST" action="/registration">
                     <tr>
                         <td>
